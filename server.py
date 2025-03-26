@@ -5,9 +5,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    title = "Планировщик"  # Создание переменной для шаблона
     return render_template(
-        "index.html", page_title=title
+        "index.html"
     )
 
 
