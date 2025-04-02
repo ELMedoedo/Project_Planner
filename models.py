@@ -1,6 +1,6 @@
-from sqlalchemy import String, Text, Integer, Column
+from sqlalchemy import String, DateTime
 from database import Base, engine
-# from datetime import datetime
+from datetime import datetime
 from sqlalchemy.orm import Mapped, mapped_column
 
 
@@ -9,9 +9,15 @@ class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True) #Колонка с уникальным номером строки
     login: Mapped[str] = mapped_column(String(120))  # Логин пользователя, не больше 120 символов
     email: Mapped[str] = mapped_column(unique=True) # колонка с почтой пользователя, уникальные значения.
+    password: Mapped[str] = mapped_column(String) # так же необходимо придумать, как шифровать пароли. Как вариант, отправлять их в функцию, где происходит шифр и тут выводить уже результат. Достаточно для начала просто шестнадцатиричного представлерия.
+    city: Mapped[str] = mapped_column(String, nullable=True)
+    birthday: Mapped[datetime] = mapped_column(DateTime, nullable=True)
 
-    def __rep__(self): # метод класса, который отобразит читаемое отображание атрибутов
-        return f"<User>: {self.login}, {self.email}"
+
+
+
+    def __repr__(self): # метод класса, который отобразит читаемое отображание атрибутов
+        return f"<User: {self.login}, {self.email}, Birthday: {self.birthday}>"
 
 # для создания таблицы -  необходимо запустить сам файл models
 if __name__ == "__main__":
