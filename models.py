@@ -2,6 +2,7 @@ from sqlalchemy import String, DateTime
 from database import Base, engine
 from datetime import datetime
 from sqlalchemy.orm import Mapped, mapped_column
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class User(Base):
@@ -9,11 +10,15 @@ class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True) #Колонка с уникальным номером строки
     login: Mapped[str] = mapped_column(String(120))  # Логин пользователя, не больше 120 символов
     email: Mapped[str] = mapped_column(unique=True) # колонка с почтой пользователя, уникальные значения.
-    password: Mapped[str] = mapped_column(String) # так же необходимо придумать, как шифровать пароли. Как вариант, отправлять их в функцию, где происходит шифр и тут выводить уже результат. Достаточно для начала просто шестнадцатиричного представлерия.
-    city: Mapped[str] = mapped_column(String, nullable=True)
+    password: Mapped[str] = mapped_column(String(40)) 
+    city: Mapped[str] = mapped_column(nullable=True)
     birthday: Mapped[datetime] = mapped_column(DateTime, nullable=True)
 
+    # def set_password(self, password):
+    #     self.password = generate_password_hash(password) # преобразование  Пассворд в зашифрованную строку. результат кладется в атрибут обьекта пассворд в данном случае
 
+    # def check_password(self, password):
+    #     return check_password_hash(self.password, password) # достаем зашифрованный пароль из базы данных (туда положил генератор его)б и пароль, пришедший от юзера. Зашифрует то, что пришло от пользователя и сверит. На выходе True либо False
 
 
     def __repr__(self): # метод класса, который отобразит читаемое отображание атрибутов
@@ -25,19 +30,4 @@ if __name__ == "__main__":
     #интепретатор обращается к Base, импортируемые из database, обращемся к метадате Base, в методате есть метод create_all - который создаст все таблицы. БЕЗ ЗАДВОЕНИЙ
 
 
-# class Users(Base):
-#     __tablename__ = "users"
-#     id = db.Column(db.Integer, primary_key=True)
-#     login = db.Column(db.String(255), nullable=False)
-#     email = db.Column(db.String(255), nullable=False)
-#     password = db.Column(
-#         db.String(255), nullable=False
-#     )  # так же необходимо придумать, как шифровать пароли. Как вариант, отправлять их в функцию, где происходит шифр и тут выводить уже результат. Достаточно для начала просто шестнадцатиричного представлерия.
-#     name = db.Column(db.String(255), nullable=True)
-#     secondname = db.Column(db.String(255), nullable=True)
-#     city = db.Column(db.String(255), nullable=True)
-#     birthday = db.Column(db.datetime, nullable=True)
 
-
-# if __name__ == "__main__":
-#     Base.metadata.create_all(bind=engine)

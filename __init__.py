@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from forms import LoginForm
+# from flask_login import Loginmanager
 
  
 app = Flask(__name__)
@@ -18,9 +19,6 @@ def login():
     return render_template(
         "login.html", page_title = title, form = login_form
     )
-
-
-
 
 
 
