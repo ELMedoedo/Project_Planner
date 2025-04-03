@@ -2,7 +2,7 @@ from sqlalchemy import String, DateTime
 from database import Base, engine
 from datetime import datetime
 from sqlalchemy.orm import Mapped, mapped_column
-from werkzeug.security import generate_password_hash, check_password_hash
+# from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class User(Base):

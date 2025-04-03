@@ -8,11 +8,13 @@ from werkzeug.security import generate_password_hash
 @app.route("/create_user", methods=["POST"])
 def create_user():
 
+
+    # request.get_json() - Извлекает JSON-данные из тела (body) HTTP-запроса. Преобразует их в словарь Python (или список, если JSON был массивом). Инструмент Flask
     data = request.get_json()
 
     # Проверка обязательных полей
-    required_fields = {"email", "username", "password", "password_sec"}
-    if not data or not required_fields.issubset(data):   #Метод issubset определяет, является ли одно множество подмножеством другого
+    required_fields = {"email", "username", "password", "password_sec"} # множество обязательных полей
+    if not data or not required_fields.issubset(data):   #Метод issubset определяет, является ли одно множество подмножеством другого. Т.е. проверяет, все ли элементы `required_fields` присутствуют в ключах словаря `data`. Если хотя бы одно поле отсутствует, `issubset()` вернет `False`, а с оператором `not` это становится `True`, что приводит к выполнению условия.
         return (
             jsonify({"error": "Missing required fields"}),
             400,
@@ -29,7 +31,7 @@ def create_user():
     if User.query.filter_by(
         email = data["email"]
     ).first():  # обращаемся к таблице, к отфильтрованной колонке email. При возникновении совпадения - Ошибка
-        return jsonify({"error": "Email already exists"})
+        return jsonify({"error": "Email already exists"}), 409
     if User.query.filter_by(
         username = data["username"]
     ).first():  # Аналогично обращаемся к колонке username.
@@ -40,7 +42,7 @@ def create_user():
             email = data["email"],
             password_hash = generate_password_hash(
                 data["password"]
-            ),  # Пароль хешируется. Пароли уже точно одинаковые. сразу его шифруем.
+            ),  # Пароль хешируется. Пароли уже точно одинаковые. сразу его и шифруем.
         )
 
         # db — это центральный объект SQLAlchemy, созданный при старте приложения.
@@ -52,7 +54,7 @@ def create_user():
         return jsonify(
             {
                 "message": "User was created successfully",
-                "task": {
+                "user": {
                     "id": new_user.id,
                     "email": new_user.email,
                     "username": new_user.username
