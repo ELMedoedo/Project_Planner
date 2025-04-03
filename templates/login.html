@@ -23,36 +23,36 @@
             <div class="accordion-item">
               <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                  Login
+                  {{ form.label1.label }}
                 </button>
               </h2>
               <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                   <form action="#" class="row g-3">
                     <div class="col-md-12">
-                      <label for="exampleFormControlInput1" class="form-label">Email address or Login
-                        <span class="text-danger">*</span>
+                      <label for="exampleFormControlInput1" class="form-label">{{ form.username_email.label }}
+                        <!-- <span class="text-danger">*</span> -->
                       </label>
-                      <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">                    
+                      <input type="email" class="form-control" id="inputEmail_chek">                    
                     </div>
                     <div class="col-md-12">
-                      <label for="inputPassword5" class="form-label">Password
-                        <span class="text-danger">*</span>
+                      <label for="inputPassword5" class="form-label">{{ form.password.label }}
+                        <!-- <span class="text-danger">*</span> -->
                       </label>
-                      <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock">
+                      <input type="password" id="inputPassword_chek" class="form-control" aria-describedby="passwordHelpBlock">
                     </div>
                     <div class="d-flex justify-content-between">
                       <div class="form-check">
                         <input type="chekbox" class="form-check-input">
-                        <label for="chekbox">Remember me</label>
+                        <label for="chekbox">{{ form.save_login.label }}</label>
                       </div>
                       <a href="#" class="f-passwords">
-                        <u>Forgot Password</u>
+                        <u>{{ form.forgot_pas.label() }}</u>
                       </a>
                     </div>
                     <div class="col-md-12">
                       <button class="btn border-0" type="submit" >
-                        Login
+                        {{ form.submit_in.label }}
                       </button>
                     </div>
                   </form>
@@ -62,26 +62,32 @@
             <div class="accordion-item">
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                  Register
+                  {{ form.submit_reg.label}}
                 </button>
               </h2>
               <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                   <form action="#" class="row g-3">
                     <div class="col-md-12">
-                      <label for="exampleFormControlInput1" class="form-label">Email address or Login
+                      <label for="exampleFormControlInput1" class="form-label">{{ form.email.label }}
                         <span class="text-danger">*</span>
                       </label>
-                      <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">                    
+                      <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@ya.ru">                    
                     </div>
                     <div class="col-md-12">
-                      <label for="inputPassword5" class="form-label">Password
+                      <label for="exampleFormControlInput1" class="form-label">{{ form.username.label }}
+                        <span class="text-danger">*</span>
+                      </label>
+                      <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name">                    
+                    </div>
+                    <div class="col-md-12">
+                      <label for="inputPassword5" class="form-label">{{ form.password.label }}
                         <span class="text-danger">*</span>
                       </label>
                       <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock">
                     </div>
                     <div class="col-md-12">
-                      <label for="inputPassword5" class="form-label">Confirm your password
+                      <label for="inputPassword5" class="form-label">{{ form.password_sec.label }}
                         <span class="text-danger">*</span>
                       </label>
                       <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock">
@@ -90,7 +96,7 @@
                     </div>
                     <div class="col-md-12">
                       <button class="btn border-0" type="submit">
-                        Register
+                        {{ form.submit_reg.label }}
                       </button>
                     </div>
                   </form>
