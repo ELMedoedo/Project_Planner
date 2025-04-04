@@ -18,7 +18,7 @@ def create_user():
         return (
             jsonify({"error": "Missing required fields"}),
             400,
-        )  # 400 — ошибка в данных от клиента
+        )  # 400 — ошибка в данных от клиента, данные обязательные- все должно быть введено
 
     # Проверка совпадения паролей
     if data["password"] != data["password_sec"]:
@@ -63,7 +63,7 @@ def create_user():
         )
     except (
         Exception
-    ) as err:  # ловим любую ошибку, любое исключение, которое возникло в блоке try. Exception - базовый класс всех ошибок. еrr - переменная, содерж. инф об ошибке
+    ):  # ловим любую ошибку, любое исключение, которое возникло в блоке try. Exception - базовый класс всех ошибок. еrr - переменная, содерж. инф об ошибке
         db.session.rollback()  # Откатывает все несохранённые изменения в текущей сессии работы с БД. Не оставляем базу в подвешенном состоянии
         return (
             jsonify({"error": "Internal server error"}),
@@ -71,3 +71,40 @@ def create_user():
         )  # Возвращаем JSON-ответ с сообщением об ошибке и HTTP-статусом 500
 
     # Но, возвращать str(err) - нельзя, т.к. она хранит информацию о бд. МОжет хранить прочую важную инфу.
+    # Так что ее можно убрать в проде
+
+
+
+#Проверяем почту в ДБ
+@app.route("/chek_email", methods=["POST"])
+def chek_email():
+
+    data = request.get_json() #Получаем данные из запроса, преобразовываем в словарь.
+
+    if not data : #1 - проверка на то, есть ли вообще данные в запросе
+        return jsonify({"error": "Пустое поле"}), 400
+    
+    if "@" not in data["email"] or "." not in data["email"]: # проверка на корректность введения почты.
+        return jsonify({"error": "Не верный формат почты"}), 400
+    
+    try:
+        email_exixts = User.query.filter_by(email = data["email"]).first()
+        # .query - метод для создания заросов к таблице (часть SQLAlchemy.orm)
+        # .filter_by() (можно и filter, но он более долгий) фильтруем записи по колонке email
+        # email = data["email"] - условие, где строка в столбце email равна значению data["email"]
+        # .first() метод возвращает обьект таблицы User, если запись найдена, None - если не найдено. 
+
+        if email_exixts:
+            return jsonify({
+                "exists" : True, # в JSON ответе - означает, что Мэйл уже есть в БД
+                "message": "Email already registered"
+            }), 200
+        
+        else:
+            return jsonify({
+                "exists": False, # в БД не найдено
+                "message": "Email is available"
+            }), 200
+    except Exception:
+        return 500
+

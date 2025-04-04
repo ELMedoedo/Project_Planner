@@ -197,7 +197,7 @@ a.sidebar-link:hover {
 .form-check.form-check-input{
     border-color: rgb(201, 48, 147);
 }
-
+ /* Настройки кнопок */
 .btn{
     width: 100%;
     margin: 10px 0;
