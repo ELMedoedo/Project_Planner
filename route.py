@@ -24,18 +24,21 @@ def create_user():
     if data["password"] != data["password_sec"]:
         return (
             jsonify({"error": "Passwords do not match"}),
-            409,
-        )  # 409 — конфликт (дубликат)
+            400,
+        )  # 400 — конфликт (дубликат)
+    
+    if len(data["password"]) < 8 or len(data["password"]) > 20:
+        return jsonify({"error": "Password must be at least 8 - 20 characters"}), 400
 
     # Проверка уникальности email и username. User.query - Это доступ к таблице users через SQLAlchemy. User —  модель (класс), а .query — инструмент для построения SQL-запросов.
     if User.query.filter_by(
         email = data["email"]
     ).first():  # обращаемся к таблице, к отфильтрованной колонке email. При возникновении совпадения - Ошибка
-        return jsonify({"error": "Email already exists"}), 409
+        return jsonify({"error": "Email already exists"}), 400
     if User.query.filter_by(
         username = data["username"]
     ).first():  # Аналогично обращаемся к колонке username.
-        return jsonify({"error": "Username already exists"}), 409
+        return jsonify({"error": "Username already exists"}), 400
     try:
         new_user = User(
             username = data["username"],
@@ -88,13 +91,13 @@ def chek_email():
         return jsonify({"error": "Не верный формат почты"}), 400
     
     try:
-        email_exixts = User.query.filter_by(email = data["email"]).first()
+        email_map = User.query.filter_by(email = data["email"]).first()
         # .query - метод для создания заросов к таблице (часть SQLAlchemy.orm)
         # .filter_by() (можно и filter, но он более долгий) фильтруем записи по колонке email
         # email = data["email"] - условие, где строка в столбце email равна значению data["email"]
         # .first() метод возвращает обьект таблицы User, если запись найдена, None - если не найдено. 
 
-        if email_exixts:
+        if email_map:
             return jsonify({
                 "exists" : True, # в JSON ответе - означает, что Мэйл уже есть в БД
                 "message": "Email already registered"
@@ -105,6 +108,50 @@ def chek_email():
                 "exists": False, # в БД не найдено
                 "message": "Email is available"
             }), 200
-    except Exception:
-        return 500
+    except Exception:(
+            jsonify({"error": "Internal server error"}),
+            500,
+        ) 
 
+#Заносим пароль в БД 
+@app.route("/pass_rec", methods=["POST"])
+def pass_rec():
+
+    data = request.get_json()
+
+    required_fields = {"email", "pass1", "pass2"} 
+    if not data or not required_fields.issubset(data):   # Проверяем, что Пароли введены оба
+        return (
+            jsonify({"error": "Missing required fields"}),
+            400,
+        )
+    
+    if data["pass1"] != data["pass2"]: # Проверка на одинаковые пароли
+        return (
+            jsonify({"error": "Passwords do not match"}),
+            400,
+        )  # 400 — конфликт (дубликат)
+    
+    if len(data["pass1"]) < 8 or len(data["password"]) > 20:
+        return jsonify({"error": "Password must be at least 8 - 20 characters"}), 400
+    
+    try:   
+        user_map = User.query.filter_by(email=data["email"]).first()      # Ищем пользователя по email
+        
+        if not user_map:
+            return jsonify({"error": "User not found"}), 404
+        # 404 - если пользователь не найден
+        
+                
+        user_map.password_hash = generate_password_hash(data["pass1"])   # Обновляем пароль (хешируем новый пароль)
+        db.session.commit()   # Фиксируем все изменения в базе данных. появился новый пользователь в таблице users
+
+        return jsonify({
+            "message": "Password updated successfully",
+            "email": user_map.email
+        }), 200
+    
+
+    except Exception:
+        db.session.rollback()    # Откатывает все несохранённые изменения в текущей сессии работы с БД. Не оставляем базу в подвешенном состоянии!
+        return jsonify({"error": "Internal server error"}), 500

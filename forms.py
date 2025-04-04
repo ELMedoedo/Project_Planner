@@ -9,8 +9,8 @@ class LoginForm(FlaskForm):
     username_email = StringField("Имя пользователя или Почта:" , validators=[DataRequired()])
     username = StringField("Имя пользователя:" , validators=[DataRequired()])
     email = StringField("Почта:" , validators=[DataRequired()])
-    password = PasswordField("Пароль: " , validators=[DataRequired(),  Length(min=8, max=20, message="Почта должна содержать от 8 до 20 символов")])   # Ограничение на длину почты 8-20
-    password_sec = PasswordField("Подтвердите пароль: " , validators=[DataRequired(),  Length(min=8, max=20, message="Почта должна содержать от 8 до 20 символов")])
+    password = PasswordField("Пароль: " , validators=[DataRequired(),  Length(min=8, max=20, message="Пароль должен содержать от 8 до 20 символов")])   # Ограничение на длину почты 8-20
+    password_sec = PasswordField("Подтвердите пароль: " , validators=[DataRequired(),  Length(min=8, max=20, message="Пароль должен содержать от 8 до 20 символов")])
     # hidden_tag = HiddenField
     submit_in = SubmitField("Авторизация")
     submit_reg = SubmitField("Регистрация")
