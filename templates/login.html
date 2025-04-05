@@ -24,20 +24,29 @@
               <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
                   aria-expanded="true" aria-controls="collapseOne">
-                  {{ form.label1.label }}
+                  Вход
                 </button>
               </h2>
               <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                  <form action="#" class="row g-3">
+                  <!-- {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div class="alert alert-warning" role="alert">
+                        {% for message in messages %}
+                            {{ message }}<br>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                {% endwith %} -->
+                  <form action="{{ url_for('process_login') }}" method="post" class="row g-3">
                     <div class="col-md-12">
-                      <label for="email_name_chek1" class="form-label">{{ form.username_email.label }}
+                      <label for="email_name_chek1" class="form-label">{{ login_form.username.label }}
                         <!-- <span class="text-danger">*</span> -->
                       </label>
                       <input type="str" class="form-control" id="email_name_chek1">
                     </div>
                     <div class="col-md-12">
-                      <label for="inputPassword_chek1" class="form-label">{{ form.password.label }}
+                      <label for="inputPassword_chek1" class="form-label">{{ login_form.password.label }}
                         <!-- <span class="text-danger">*</span> -->
                       </label>
                       <input type="password" id="inputPassword_chek1" class="form-control"
@@ -46,15 +55,15 @@
                     <div class="d-flex justify-content-between">
                       <div class="form-check">
                         <input type="chekbox" class="form-check-input">
-                        <label for="chekbox">{{ form.save_login.label }}</label>
+                        <label for="chekbox">{{ login_form.save_login.label }}</label>
                       </div>
                       <a href="#" class="f-passwords">
-                        <u>{{ form.forgot_pas.label() }}</u>
+                        <u>{{ login_form.forgot_pas.label() }}</u>
                       </a>
                     </div>
                     <div class="col-md-12">
                       <button class="btn border-0" type="submit">
-                        {{ form.submit_in.label }}
+                        {{ login_form.submit_in.label }}
                       </button>
                     </div>
                   </form>
@@ -65,33 +74,33 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                  {{ form.submit_reg.label}}
+                  {{ reg_form.submit_reg.label}}
                 </button>
               </h2>
               <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                   <form action="#" class="row g-3">
                     <div class="col-md-12">
-                      <label for="email_input1" class="form-label">{{ form.email.label }}
+                      <label for="email_input1" class="form-label">{{ reg_form.email.label }}
                         <span class="text-danger">*</span>
                       </label>
                       <input type="email" class="form-control" id="email_input1" placeholder="name@ya.ru">
                     </div>
                     <div class="col-md-12">
-                      <label for="name_input1" class="form-label">{{ form.username.label }}
+                      <label for="name_input1" class="form-label">{{ reg_form.username1.label }}
                         <span class="text-danger">*</span>
                       </label>
                       <input type="email" class="form-control" id="name_input1" placeholder="name">
                     </div>
                     <div class="col-md-12">
-                      <label for="inputPassword1" class="form-label">{{ form.password.label }}
+                      <label for="inputPassword1" class="form-label">{{ reg_form.password_fir.label }}
                         <span class="text-danger">*</span>
                       </label>
                       <input type="password" id="inputPassword1" class="form-control"
                         aria-describedby="passwordHelpBlock">
                     </div>
                     <div class="col-md-12">
-                      <label for="inputPassword2" class="form-label">{{ form.password_sec.label }}
+                      <label for="inputPassword2" class="form-label">{{ reg_form.password_sec.label }}
                         <span class="text-danger">*</span>
                       </label>
                       <input type="password" id="inputPassword2" class="form-control"
@@ -101,7 +110,7 @@
                     </div>
                     <div class="col-md-12">
                       <button class="btn border-0" type="submit">
-                        {{ form.submit_reg.label }}
+                        {{ reg_form.submit_reg.label }}
                       </button>
                     </div>
                   </form>
