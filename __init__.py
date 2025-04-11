@@ -36,7 +36,7 @@ def process_login():
         form.validate_on_submit()
     ):  # Если данные формы пришли и она валидируется. Если возникнут ошибки (пользователь не заполнил поля).
         user = User.query.filter(
-            User.username == form.username.data
+            User.user == form.username.data
         ).first()  # запрашиваем пользователя из базы данных (в форме данные лежат в Формс)
         if user and user.check_password(
             form.password.data

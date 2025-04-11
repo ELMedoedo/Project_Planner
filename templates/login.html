@@ -29,7 +29,7 @@
               </h2>
               <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                  <!-- {% with messages = get_flashed_messages() %}
+                  {% with messages = get_flashed_messages() %}
                     {% if messages %}
                     <div class="alert alert-warning" role="alert">
                         {% for message in messages %}
@@ -37,7 +37,7 @@
                         {% endfor %}
                     </div>
                     {% endif %}
-                {% endwith %} -->
+                {% endwith %}
                   <form action="{{ url_for('process_login') }}" method="post" class="row g-3">
                     <div class="col-md-12">
                       <label for="email_name_chek1" class="form-label">{{ login_form.username.label }}
