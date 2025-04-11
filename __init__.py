@@ -5,13 +5,13 @@ from flask import Flask, render_template, flash, redirect, url_for
 from database import db
 from forms import LoginForm, RegForm, PassRecForm, ChekMail
 from flask_login import LoginManager, login_user, logout_user
-
+from models import User
 
 app = Flask(__name__)
 app.config.from_pyfile("config.py")
 
 
-from models import User
+
 
 @app.route("/")
 def index():

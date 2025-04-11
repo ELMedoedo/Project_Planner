@@ -10,6 +10,6 @@ users = my_user_res.scalars()    #метод скаларс. Представл�
 
 for user in users:
     print(f"""
-    Зарплата: {user.user}
+    Сам пользователь: {user.user}
     Почта: {user.email}
 """)
