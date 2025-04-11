@@ -1,7 +1,6 @@
-from sqlalchemy import String, DateTime, ForeignKey
+from sqlalchemy import String, DateTime, ForeignKey, Date
 from flask_login import UserMixin
 from database import Base, engine
-from datetime import datetime
 from sqlalchemy.orm import Mapped, mapped_column
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -12,8 +11,8 @@ class User(Base):    # , UserMixin
     user: Mapped[str] = mapped_column(String(120))  # Логин пользователя, не больше 120 символов
     email: Mapped[str] = mapped_column(unique=True) # колонка с почтой пользователя, уникальные значения.
     password: Mapped[str] = mapped_column(String(40)) 
-    city: Mapped[str] = mapped_column(nullable=True)
-    birthday: Mapped[datetime] = mapped_column(DateTime, nullable=True)
+    city: Mapped[str] 
+    birthday: Mapped[Date] = mapped_column(Date)
 
     def set_password(self, password):
         self.password = generate_password_hash(password) # преобразование  Пассворд в зашифрованную строку. результат кладется в атрибут обьекта пассворд в данном случае
@@ -29,10 +28,10 @@ class User(Base):    # , UserMixin
 class Dashboard(Base):
     __tablename__ = "dashboards"
     id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey(User.user), index=True)
-    user_name: Mapped[str] = mapped_column()
-    table_type: Mapped[str] = mapped_column(String(30))
-    table_comment: Mapped[str] = mapped_column(String(150))
+    user_id: Mapped[int] = mapped_column(ForeignKey(User.id), index=True)
+    user_name: Mapped[str] 
+    table_type: Mapped[str] 
+    table_comment: Mapped[str]
 
     def __repr__(self): # метод класса, который отобразит читаемое отображание атрибутов
         return f"<Board: {self.user_id}, {self.table_type}, Comment: {self.table_comment}>"
@@ -42,7 +41,7 @@ class Task(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     table_id: Mapped[int] = mapped_column(ForeignKey(Dashboard.id), index=True)
     title: Mapped[str] = mapped_column(String(100), nullable=False)
-    body: Mapped[str] = mapped_column( nullable=False)
+    body: Mapped[str]
     status: Mapped[str] =  mapped_column(String(50), nullable=False, default="Новая")
 
     def __repr__(self):
@@ -53,7 +52,7 @@ class Task_SubPlan(Base):
     i: Mapped[int] = mapped_column(primary_key=True)
     table_id: Mapped[int] = mapped_column(ForeignKey(Task.id), index=True)
     title: Mapped[str] = mapped_column(String(100), nullable=True)
-    body: Mapped[str] = mapped_column( nullable=True)
+    body: Mapped[str] 
     status: Mapped[str] =  mapped_column(String(50), nullable=False)
 
     def __repr__(self):
