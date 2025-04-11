@@ -1,16 +1,14 @@
 from flask import Flask, render_template, flash, redirect, url_for
-# flash - передача со страницы на страницу (Вывод ошибки на страницы, если найдне ошибка)
-# redirect - делает перенаправление со страницы на страницу. Т.е. после ввода пароля - на страницу планера
-# url_for - позволяет преобразовать по названию ф-ии получить  URL - функция login - url - /login
-from .database import db
-from .forms import LoginForm, RegForm, PassRecForm, ChekMail
+from webapp.database import db
+from webapp.forms import LoginForm, RegForm, PassRecForm, ChekMail
 from flask_login import LoginManager, login_user, logout_user
-from .models import User
+from webapp.models import User
 
 
 def create_app():
     app = Flask(__name__)
     app.config.from_pyfile("config.py")
+    db.init_app(app)
 
     @app.route("/")
     def index():
