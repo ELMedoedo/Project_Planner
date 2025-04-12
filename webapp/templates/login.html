@@ -39,18 +39,22 @@
                     {% endif %}
                 {% endwith %}
                   <form action="{{ url_for('process_login') }}" method="post" class="row g-3">
+                    {{ login_form.hidden_tag() }}
                     <div class="col-md-12">
                       <label for="email_name_chek1" class="form-label">{{ login_form.username.label }}
                         <!-- <span class="text-danger">*</span> -->
                       </label>
-                      <input type="str" class="form-control" id="email_name_chek1">
+                      {{ login_form.username(
+                        placeholder="Введите логин"
+                      ) }}
                     </div>
                     <div class="col-md-12">
                       <label for="inputPassword_chek1" class="form-label">{{ login_form.password.label }}
                         <!-- <span class="text-danger">*</span> -->
                       </label>
-                      <input type="password" id="inputPassword_chek1" class="form-control"
-                        aria-describedby="passwordHelpBlock">
+                        {{ login_form.password(
+                          placeholder="Введите пароль"
+                        ) }}
                     </div>
                     <div class="d-flex justify-content-between">
                       <div class="form-check">

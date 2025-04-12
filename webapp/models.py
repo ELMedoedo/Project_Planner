@@ -41,7 +41,7 @@ class Dashboard(db.Model):
 class Task(db.Model):
     __tablename__ = "tasks"
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
-    table_id: Mapped[int] = mapped_column(db.Integer, db.ForeignKey('dashboards.id'))
+    dashboard_id: Mapped[int] = mapped_column(db.Integer, db.ForeignKey('dashboards.id'))
     title: Mapped[str] = mapped_column(db.String(100), nullable=True)
     body: Mapped[str] = mapped_column(db.Text, nullable=True)
     status: Mapped[str] = mapped_column(db.String(50), default="Новая")
@@ -53,7 +53,7 @@ class Task(db.Model):
 class Task_SubPlan(db.Model):
     __tablename__ = "task_subplans"
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
-    task_id: Mapped[int] = mapped_column(db.Integer, db.ForeignKey('tasks.id'), nullable=True )
+    task_id: Mapped[int] = mapped_column(db.Integer, db.ForeignKey('tasks.id'))
     title: Mapped[str] = mapped_column(db.String(100), nullable=True)
     body: Mapped[str] = mapped_column(db.Text, nullable=True)
     status: Mapped[str] = mapped_column(db.String(50), nullable=True)

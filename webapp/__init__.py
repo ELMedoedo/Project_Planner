@@ -10,6 +10,15 @@ def create_app():
     app.config.from_pyfile("config.py")
     db.init_app(app)
 
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = 'login'
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(user_id)
+
+
     @app.route("/")
     def index():
         return render_template("index.html")
@@ -41,6 +50,11 @@ def create_app():
                 login_user(user)
                 flash("Вы успешно вошли на сайт!")
                 return redirect(url_for("index"))
+            
+            # else:
+            #     flash("Мда!")
+            #     return redirect(url_for("index"))
+
 
         flash("Не правильное имя или пароль")
         return redirect(url_for("login"))
@@ -58,5 +72,12 @@ def create_app():
         title = "Восстановление пароля"
         passrec_form = PassRecForm()
         return render_template("passrec.html", page_title=title, form=passrec_form)
+
+
+    @app.route("/logout")
+    def logout():
+        logout_user()
+        flash("Вы вышли из системы")
+        return redirect(url_for("login"))
 
     return app
