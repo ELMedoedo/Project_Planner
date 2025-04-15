@@ -1,19 +1,7 @@
-<!DOCTYPE html>
-<html lang="ru">
+{% extends "base.html" %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X_UA-Comatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Planner</title>
-  <link rel="stylesheet" href="https://cdn.lineicons.com/5.0/lineicons.css" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-</head>
+{% block content %}
 
-
-<body>
   <!-- https://getbootstrap.com/docs/5.3/components/navbar/
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
@@ -197,11 +185,4 @@
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-    integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-    crossorigin="anonymous"></script>
-  <script src="/static/script.js"></script>
-
-</body>
-
-</html>
+  {% endblock %}

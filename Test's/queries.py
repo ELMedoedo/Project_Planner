@@ -1,7 +1,7 @@
 from sqlalchemy import select
 
 from webapp.database import db
-from webapp.models import User
+from webapp.db import User
 
 def top_user(row_num):
     top_users = select(User).order_by(User.user.desc()).limit(row_num)     # desc - тип сортировки от большего к меньшему. asc - от меньшего к большему. limit - какой нам нужен срез от выборки
