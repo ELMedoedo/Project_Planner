@@ -158,3 +158,52 @@ a.sidebar-link:hover {
     transform: rotate(45deg);
     transition: all .2s ease-out;
 }
+
+#login button:focus{
+    box-shadow: none;
+}
+
+
+/* Настройка фона оглавления форм Логина и Регистрации */
+.accordion-button:not(.collapsed){
+    background-color: #0e2238;
+    color: #ffffff
+    ;
+}
+
+.form-lable{
+    color: #5e5d5d;
+}
+
+
+/* Обводка полей ввода данных */
+.form-control{
+    background-color: #ffffff;
+    padding: 0 30px;
+    border-color: #949494;
+    line-height: 45px;
+    border-radius: 0;
+}
+
+/* Цвета заполнения поле ввода */
+.form-control:focus{
+    outline: none;
+    box-shadow: 0 0 0 0 rgba(255, 255, 255);
+    background-color: #d8e4ff;
+    color: #0e2238;
+    border-color: #949494;
+}
+
+.form-check.form-check-input{
+    border-color: rgb(201, 48, 147);
+}
+ /* Настройки кнопок */
+.btn{
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px;
+    color: #FFF;
+    font-weight: 600;
+    border-radius: 0;
+    background-color: #3b7ddd;
+}

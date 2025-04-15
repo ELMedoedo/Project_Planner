@@ -1,4 +1,5 @@
 settings.py
+config.py
 *.log
 .vscode/
 .idea/
