@@ -74,13 +74,19 @@
                       <label for="email_input1" class="form-label">{{ reg_form.email.label }}
                         <span class="text-danger">*</span>
                       </label>
-                      <input type="email" class="form-control" id="email_input1" placeholder="name@ya.ru">
+                      {{ reg_form.email(
+                        placeholder="Введите почту"
+                      ) }}
+                      <!-- <input type="email" class="form-control" id="email_input1" placeholder="name@ya.ru"> -->
                     </div>
                     <div class="col-md-12">
                       <label for="name_input1" class="form-label">{{ reg_form.username1.label }}
                         <span class="text-danger">*</span>
                       </label>
-                      <input type="email" class="form-control" id="name_input1" placeholder="name">
+                      {{ reg_form.username1(
+                        placeholder="Введите логин"
+                      ) }}
+                      <!-- <input type="email" class="form-control" id="name_input1" placeholder="name"> -->
                     </div>
                     <div class="col-md-12">
                       <label for="inputPassword1" class="form-label">{{ reg_form.password_fir.label }}
@@ -93,8 +99,7 @@
                       <label for="inputPassword2" class="form-label">{{ reg_form.password_sec.label }}
                         <span class="text-danger">*</span>
                       </label>
-                      <input type="password" id="inputPassword2" class="form-control"
-                        aria-describedby="passwordHelpBlock">
+                      {{ reg_form.username1() }}
                     </div>
                     <div class="d-flex justify-content-between">
                     </div>

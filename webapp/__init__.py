@@ -1,7 +1,10 @@
 from flask import Flask
+from flask_login import LoginManager
+from flask_migrate import Migrate # включаем миграцию, для того, чтобы была прямая синхронизация колонок с колонками в БД
+
+
 from webapp.db import db
 from webapp.user.models import User
-from flask_login import LoginManager
 from webapp.user.views import blueprint as user_blueprint
 from webapp.tasks.views import blueprint as task_blueprint
 
@@ -11,6 +14,7 @@ def create_app():
     app = Flask(__name__)
     app.config.from_pyfile("config.py")
     db.init_app(app)
+    migrate = Migrate(app, db)
 
     login_manager = LoginManager()
     login_manager.init_app(app)
