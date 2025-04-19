@@ -42,12 +42,12 @@ def process_login():
 def chekmail():
     title = "Проверка Почты"
     chekmail_form = ChekMail()
-    return render_template("user/chekmail.html", page_title=title, form=chekmail_form)
+    return render_template("login/chekmail.html", page_title=title, form=chekmail_form)
 
 
 @blueprint.route("/passrec")
 def passrec():
     title = "Восстановление пароля"
     passrec_form = PassRecForm()
-    return render_template("user/passrec.html", page_title=title, form=passrec_form)
+    return render_template("login/passrec.html", page_title=title, form=passrec_form)
 
