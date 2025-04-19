@@ -28,6 +28,6 @@ class RegForm(FlaskForm):
     label2 = StringField("Регистрация" )
     email = EmailField("Почта:" , validators=[DataRequired(), Email()], render_kw = {"class": "form-control"})
     username1 = StringField("Имя пользователя:" , validators=[DataRequired()], render_kw = {"class": "form-control"})
-    password_fir = PasswordField("Пароль: " , validators=[DataRequired()], render_kw = {"class": "form-control"}) ,
+    password_fir = PasswordField("Пароль: " , validators=[DataRequired()], render_kw = {"class": "form-control"})
     password_sec = PasswordField("Подтвердите пароль: " , validators=[DataRequired(), EqualTo(password_fir)], render_kw = {"class": "form-control"})
     submit_reg = SubmitField("Регистрация")
