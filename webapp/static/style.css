@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
+
+
 ::after,
 ::before {
     box-sizing: border-box;
@@ -46,6 +48,17 @@ body {
     flex-direction: column;
     background-color: #0e2238;
 }
+
+#navbar .navbar {
+    --bs-navbar-padding-x: 0;
+    --bs-navbar-padding-y: 0;
+    background: #0e2238 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
 
 
 /* Расстояние, на которое раскрывается меню, при нажатии кнопки */
@@ -207,3 +220,64 @@ a.sidebar-link:hover {
     border-radius: 0;
     background-color: #3b7ddd;
 }
+
+
+/* ------------------- */
+
+.task-form {
+    position: fixed;
+    top: 0;
+    right: -500px;
+    width: 500px;
+    height: 100vh;
+    background: #0e2238;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+    transition: right 0.3s ease-in-out;
+    z-index: 1000;
+    color: white;
+}
+
+.task-form.active {
+    right: 0;
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #1a374d;
+}
+
+.btn-close-form {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0 1rem;
+}
+
+.task-form-content {
+    padding: 1.5rem;
+}
+
+.form-control {
+    background: #1a374d;
+    border: 1px solid #2a4b6a;
+    color: white;
+}
+
+.form-control:focus {
+    background: #1a374d;
+    border-color: #3a6b9a;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .task-form {
+        width: 100%;
+        right: -100%;
+    }
+}
+
