@@ -17,7 +17,7 @@ class ChekMail(FlaskForm):
 
 
 class PassRecForm(FlaskForm):
-    password_fir = PasswordField("Пароль: " , validators=[DataRequired()], render_kw = {"class": "form-control"}) ,
+    password_fir = PasswordField("Пароль: " , validators=[DataRequired()], render_kw = {"class": "form-control"})
     password_sec = PasswordField("Подтвердите пароль: " , validators=[DataRequired(), EqualTo(password_fir)], render_kw = {"class": "form-control"})
     chek_pass1 = StringField("!!ставить галочку при нахождении в лимите 8 -20 символов!!" )
     chek_pass2 = StringField("!!ставить галочку при одинакого введенном пароле с chek_pass1" )
@@ -29,5 +29,5 @@ class RegForm(FlaskForm):
     email = EmailField("Почта:" , validators=[DataRequired(), Email()], render_kw = {"class": "form-control"})
     username1 = StringField("Имя пользователя:" , validators=[DataRequired()], render_kw = {"class": "form-control"})
     password_fir = PasswordField("Пароль: " , validators=[DataRequired()], render_kw = {"class": "form-control"})
-    password_sec = PasswordField("Подтвердите пароль: " , validators=[DataRequired(), EqualTo(password_fir)], render_kw = {"class": "form-control"})
+    password_sec = PasswordField("Подтвердите пароль: " , validators=[DataRequired(), EqualTo("password_fir")], render_kw = {"class": "form-control"})
     submit_reg = SubmitField("Регистрация")

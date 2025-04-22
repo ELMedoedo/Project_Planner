@@ -1,6 +1,6 @@
 from getpass import getpass # скрывание пароля из отоброжания (звездочки вместо пароля)
 import sys  # модуль взаимодействия с системными вызовами
-from webapp.db import User
+from webapp.user.models import User
 from webapp.db import db
 from webapp import create_app
 

@@ -5,7 +5,7 @@ from webapp.user.models import User
 from flask_login import  login_user
 from webapp.db import db
 
-blueprint = Blueprint("user", __name__, url_prefix="/users")
+blueprint = Blueprint("user", __name__, url_prefix="/user")
 
 
 @blueprint.route("/login")
@@ -45,7 +45,7 @@ def process_registration():
     if form.validate_on_submit():
         # Проверка на существующее имя пользователя
         existing_user = User.query.filter(
-            User.user_name == form.username1.data  
+            User.user == form.username1.data  
         ).first()
         
         # Проверка на существующий email
@@ -62,7 +62,7 @@ def process_registration():
             return redirect(url_for("user.login"))
 
         new_user = User(
-            user_name=form.username1.data,
+            user=form.username1.data,
             email=form.email.data,
             role = "user"
         )
@@ -72,6 +72,11 @@ def process_registration():
         
         flash("Регистрация прошла успешно!")
         return redirect(url_for("user.login"))
+    
+    for field, errors in form.errors.items():
+        for error in errors:
+            flash(f"Ошибка в поле '{getattr(form, field).label.text}': {error}")
+    return redirect(url_for("user.login") + "#collapseTwo") 
 
         
         
