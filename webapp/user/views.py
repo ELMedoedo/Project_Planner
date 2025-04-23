@@ -2,7 +2,7 @@ from flask import  Blueprint, render_template, flash, redirect, url_for
 # from webapp.registration.forms import RegForm
 from webapp.user.forms import LoginForm, ChekMail, PassRecForm, RegForm
 from webapp.user.models import User
-from flask_login import  login_user
+from flask_login import  login_user, current_user, login_required
 from webapp.db import db
 
 blueprint = Blueprint("user", __name__, url_prefix="/user")
@@ -10,6 +10,8 @@ blueprint = Blueprint("user", __name__, url_prefix="/user")
 
 @blueprint.route("/login")
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("task.planner"))
     title = "Авторизация"
     login_form = LoginForm()
     reg_form = RegForm()
