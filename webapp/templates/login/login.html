@@ -47,7 +47,7 @@
                         {{ login_form.save_login() }}
                         {{ login_form.save_login.label(class="form-check-label") }}
                       </div>
-                      <a href="#" class="f-passwords">
+                      <a href="{{ url_for('user.chekmail') }}" type="button">
                         <u>{{ login_form.forgot_pas.label() }}</u>
                       </a>
                     </div>

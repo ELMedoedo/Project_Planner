@@ -11,7 +11,7 @@ blueprint = Blueprint("user", __name__, url_prefix="/user")
 @blueprint.route("/login")
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("task.planner"))
+        return redirect(url_for("planner.planner"))
     title = "Авторизация"
     login_form = LoginForm()
     reg_form = RegForm()
@@ -34,7 +34,7 @@ def process_login():
         ): 
             login_user(user, remember=form.save_login.data)
             flash("Вы успешно вошли на сайт!")
-            return redirect(url_for("task.planner"))
+            return redirect(url_for("planner.planner"))
         
 
         flash("Не правильное имя или пароль")

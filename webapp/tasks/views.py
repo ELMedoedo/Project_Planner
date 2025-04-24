@@ -4,7 +4,7 @@ from flask_login import logout_user
 from webapp.user.views import blueprint as user_blueprint
 
 
-blueprint = Blueprint("task", __name__, url_prefix="/tasks")
+blueprint = Blueprint("planner", __name__, url_prefix="/planner")
 
 
 @blueprint.route("/planner")
