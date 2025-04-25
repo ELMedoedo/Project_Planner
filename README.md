@@ -16,3 +16,8 @@ Plan:
 
 Запуск сервера:
 set FLASK_APP=webapp && set FLASK_ENV=development && set FLASK_DEBUG=1 && flask run
+
+Миграции:
+set FLASK_APP=webapp && flask db migrate -m "*" - создаем саму миграци, * - описание
+
+flask db upgrade - производим саму миграцию. синхронизируем код и бд

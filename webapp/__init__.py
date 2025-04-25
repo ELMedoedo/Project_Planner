@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_login import LoginManager
-from flask_migrate import Migrate # включаем миграцию, для того, чтобы была прямая синхронизация колонок с колонками в БД
+from flask_migrate import Migrate
 
 
 from webapp.db import db

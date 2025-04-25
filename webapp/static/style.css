@@ -221,4 +221,34 @@ a.sidebar-link:hover {
     background-color: #3b7ddd;
 }
 
+.offcanvas-end {
+    width: 500px;
+    background: #0e2238 !important;
+    border-left: 2px solid #1a374d;
+}
 
+.btn-close-white {
+    filter: invert(1);
+}
+
+
+.table {
+    --bs-table-bg: #0e2238;
+    --bs-table-striped-bg: #1a374d;
+    border-color: #2a4b6a;
+}
+
+.table-hover tbody tr:hover {
+    --bs-table-accent-bg: #2a4b6a;
+    color: white;
+}
+
+.badge {
+    font-size: 0.9em;
+    padding: 0.5em 0.75em;
+}
+
+.table-danger {
+    --bs-table-bg: #4a1a2c;
+    --bs-table-striped-bg: #5a2a3c;
+}

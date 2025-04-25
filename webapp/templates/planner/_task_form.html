@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form class="text-white">
+    <div class="mb-3">
+        <label class="form-label">Тема задачи</label>
+        <input type="text" 
+               class="form-control bg-secondary text-white" 
+               required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Описание</label>
+        <textarea class="form-control bg-secondary text-white" 
+                  rows="4" 
+                  required></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Конечная дата</label>
+        <input type="date" 
+               class="form-control bg-secondary text-white" 
+               required>
+    </div>
+
+    <button type="submit" 
+            class="btn btn-primary w-100">
+        Создать задачу
+    </button>
+</form>
+
+{% endblock %}

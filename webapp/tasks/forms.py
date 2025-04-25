@@ -1,21 +1,63 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import (
+    StringField,
+    TextAreaField,
+    SelectField,
+    SubmitField,
+    BooleanField,
+    DateField,
+)
 from wtforms.validators import DataRequired, Length
-
-class LoginForm(FlaskForm):
-    username = StringField("Имя пользователя или Почта:" , validators=[DataRequired()], render_kw = {"class": "form-control"})
-    password = PasswordField("Пароль:" , validators=[DataRequired(),  Length(min=2, max=20, message="Пароль должен содержать от 2 до 20 символов")], render_kw = {"class": "form-control"})
-    submit_in = SubmitField("Авторизация")
-    save_login = BooleanField("Запомнить меня", default=True, render_kw={"class": "form-check-input"})
-    forgot_pas = SubmitField("Пароль утерян?")
+from datetime import datetime
 
 
-class ChekMail(FlaskForm):
-    chek_email = StringField("!!Выводить результат!! Мэйл не найдет, либо выслано письмо. Так же кул даун на кнопку в 10 секунд" )
-    start_chek_and_send = StringField("Восстановить" )
+class DashboardForm(FlaskForm):
+    table_type = StringField(
+        "Тип доски",
+        validators=[DataRequired(), Length(max=50)],
+        render_kw={"class": "form-control", "placeholder": "Введите тип доски"},
+    )
+    table_comment = TextAreaField(
+        "Комментарий к доске",
+        validators=[Length(max=500)],
+        render_kw={
+            "class": "form-control",
+            "rows": 3,
+            "placeholder": "Добавьте описание доски",
+        },
+    )
+    submit = SubmitField("Сохранить доску", render_kw={"class": "btn btn-primary"})
 
 
-class PassRecForm(FlaskForm):
-    chek_pass1 = StringField("!!ставить галочку при нахождении в лимите 8 -20 символов!!" )
-    chek_pass2 = StringField("!!ставить галочку при одинакого введенном пароле с chek_pass1" )
-    start_rec_pass = StringField("Обновить пароль" )
+class TaskForm(FlaskForm):
+    title = StringField(
+        "Название задачи",
+        validators=[DataRequired(), Length(max=100)],
+        render_kw={"class": "form-control", "placeholder": "Введите заголовок"},
+    )
+    body = TextAreaField(
+        "Описание задачи",
+        validators=[DataRequired()],
+        render_kw={
+            "class": "form-control",
+            "rows": 4,
+            "placeholder": "Добавьте подробное описание задачи",
+        },
+    )
+    status = SelectField(
+        "Статус задачи",
+        choices=[
+            ("Новая", "Новая"),
+            ("В работе", "В работе"),
+            ("Выполнено", "Выполнено"),
+        ],
+        validators=[DataRequired()],
+        render_kw={"class": "form-select"},
+    )
+
+    due_date = DateField(
+        "Срок выполнения",
+        validators=[DataRequired()],
+        render_kw={"class": "form-control", "min": datetime.now().strftime("%d-%m-%Y")},
+    )
+    submit = SubmitField("Сохранить задачу", render_kw={"class": "btn btn-success"})

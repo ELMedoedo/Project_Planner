@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column
+from datetime import datetime
 from webapp.db import db  
 
 
@@ -23,6 +24,8 @@ class Task(db.Model):
     title: Mapped[str] = mapped_column(db.String(100), nullable=True)
     body: Mapped[str] = mapped_column(db.Text, nullable=True)
     status: Mapped[str] = mapped_column(db.String(50), default="Новая")
+    due_date: Mapped[datetime] = mapped_column(db.DateTime, nullable=False)
+    # due_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
         return f"<Tasks {self.title}: {self.body}, Status: {self.status}>"
