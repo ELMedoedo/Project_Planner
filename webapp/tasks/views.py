@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, flash, redirect, url_for
 from flask_login import logout_user, current_user
 from webapp.user.views import blueprint as user_blueprint
 from webapp.tasks.models import Dashboard, Task
+from webapp.tasks.forms import TaskForm
 from webapp.db import db
 from datetime import datetime
 
@@ -15,6 +16,8 @@ def planner():
     # Получаем первую доску текущего пользователя
     dashboard = Dashboard.query.filter_by(user_id=current_user.id).first()
     
+    task_form = TaskForm()
+
     if not dashboard:
         # Создаем новую доску если не существует
         dashboard = Dashboard(
@@ -32,10 +35,31 @@ def planner():
     return render_template(
         "planner/planner.html",
         dashboard=dashboard,
-        tasks=tasks
+        tasks=tasks,
+        task_form=task_form
     )
 
 
+@blueprint.route("/process_make_task", methods=["POST"])
+def process_make_task():
+    form=TaskForm()
+
+    if form.validate_on_submit():
+        new_task = Task(
+            title=form.title.data,
+            body=form.body.data,
+            status= "Новая",
+            due_date=form.due_date.data
+        )
+
+        db.session.add(new_task)
+        db.session.commit()
+
+        flash("Задача создана")
+        return  redirect(url_for("planner.planner"))
+        
+    flash("Ошибка: проверьте правильность данных")
+    return redirect(url_for("planner.planner"))
 
 @blueprint.route("/logout")
 def logout():
