@@ -42,16 +42,16 @@ class TaskForm(FlaskForm):
             "rows": 4,
         },
     )
-    status = SelectField(
-        "Статус задачи",
-        choices=[
-            ("Новая", "Новая"),
-            ("В работе", "В работе"),
-            ("Выполнено", "Выполнено"),
-        ],
-        validators=[DataRequired()],
-        render_kw={"class": "form-select"},
-    )
+    # status = SelectField(
+    #     "Статус задачи",
+    #     choices=[
+    #         ("Новая", "Новая"),
+    #         ("В работе", "В работе"),
+    #         ("Выполнено", "Выполнено"),
+    #     ],
+    #     validators=[DataRequired()],
+    #     render_kw={"class": "form-select"},
+    # )
 
     due_date = DateField(
         "Срок выполнения",

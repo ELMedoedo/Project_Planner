@@ -17,7 +17,7 @@ def planner():
     dashboard = Dashboard.query.filter_by(user_id=current_user.id).first()
     form = TaskForm()
 
-    task_form = TaskForm()
+    # task_form = TaskForm()
 
     if not dashboard:
         # Создаем новую доску если не существует
@@ -37,46 +37,42 @@ def planner():
         "planner/planner.html",
         dashboard=dashboard,
         tasks=tasks,
-        form=form
+        task_form=form
     )
 
 @blueprint.route("/process_make_task", methods=["POST"])
 def process_make_task():
-    form = TaskForm()
+    task_form = TaskForm()
     dashboard = Dashboard.query.filter_by(user_id=current_user.id).first()
 
-    if form.validate_on_submit():
-        new_task = Task(
-            title=form.title.data,
-            body=form.body.data,
-            status="Новая",
-            due_date=form.due_date.data,
-            dashboard_id=dashboard.id  # Добавляем связь с доской
-        )
-        
-        db.session.add(new_task)
-        db.session.commit()
+    if not dashboard:
+        flash("Сначала создайте доску")
+        return redirect(url_for("planner.planner"))
 
-@blueprint.route("/process_make_task", methods=["POST"])
-def process_make_task():
-    form=TaskForm()
-
-    if form.validate_on_submit():
-        new_task = Task(
-            title=form.title.data,
-            body=form.body.data,
-            status= "Новая",
-            due_date=form.due_date.data
-        )
-
-        db.session.add(new_task)
-        db.session.commit()
-
-        flash("Задача создана")
-        return  redirect(url_for("planner.planner"))
-        
-    flash("Ошибка: проверьте правильность данных")
+    if task_form.validate_on_submit():
+        try:
+            new_task = Task(
+                title=task_form.title.data,
+                body=task_form.body.data,
+                status="Новая",
+                due_date=task_form.due_date.data,
+                dashboard_id=dashboard.id
+            )
+            
+            db.session.add(new_task)
+            db.session.commit()
+            flash("Задача успешно создана")
+        except Exception as e:
+            db.session.rollback()
+            flash(f"Ошибка: {str(e)}")
+    
+    else:
+        for field, errors in task_form.errors.items():
+            for error in errors:
+                flash(f"Ошибка в поле {getattr(task_form, field).label.text}: {error}")
+    
     return redirect(url_for("planner.planner"))
+
 
 @blueprint.route("/logout")
 def logout():

@@ -23,7 +23,7 @@ class Task(db.Model):
     dashboard_id: Mapped[int] = mapped_column(db.Integer, db.ForeignKey('dashboards.id'))
     title: Mapped[str] = mapped_column(db.String(100), nullable=False)
     body: Mapped[str] = mapped_column(db.Text, nullable=False)
-    status: Mapped[str] = mapped_column(db.String(50), default="Новая")
+    status: Mapped[str] = mapped_column(db.String(50), default="В работе")
     due_date: Mapped[date] = mapped_column(db.Date, nullable=False)
     # due_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
