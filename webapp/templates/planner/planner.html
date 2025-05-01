@@ -205,23 +205,28 @@
             <form class="task-form" action="{{ url_for('planner.process_make_task') }}" method="post">
               {{ form.hidden_tag() }}
               <div class="mb-3">
-                <label class="form-label">Тема задачи</label>
-                <input type="text" class="form-control bg-secondary text-white" required>
+                  <label class="form-label">Титул</label>
+                  {{ task_form.title(
+                      placeholder="Введите Тему"
+                    ) }}
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Описание</label>
-                <textarea class="form-control bg-secondary text-white" rows="4" required></textarea>
+                  <label class="form-label"></label>
+                  {{ task_form.body(
+                    placeholder="Введите описание"
+                  ) }}
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Конечная дата</label>
-                <input type="date" class="form-control bg-secondary text-white" required>
+                  <label class="form-label"> Дата выполнения</label>
+                  {{ task_form.due_date() }}
               </div>
 
-              <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-primary">Создать задачу</button>
-              </div>
+              <button type="submit" 
+                      class="btn btn-primary w-100">
+                  Создать задачу
+              </button>
             </form>
           </div>
         </div>
@@ -231,7 +236,7 @@
       <div class="container-fluid">
           <div class="row">
               <div class="col-12">
-                  <h2 class="mb-4 text-light">{{ dashboard.user_name }}'s Dashboard</h2>
+                  <h2 class="mb-4 text-light">{{ dashboard.user_name }} Dashboard</h2>
                   {% if dashboard.table_comment %}
                   <div class="alert alert-dark mb-90">
                       {{ dashboard.table_comment }}
@@ -256,11 +261,11 @@
                                       <td>{{ task.title }}</td>
                                       <td>{{ task.body }}</td>
                                       <td>
-                                          <span class="badge bg-{{ 'success' if task.status == 'Выполнено' 
-                                              else 'warning' if task.status == 'В работе' 
-                                              else 'secondary' }}">
-                                              {{ task.status }}
+                                        <td>
+                                          <span class="badge bg-{{ 'success' if task.status == 'Выполнено' else 'warning' if task.status == 'В работе' else 'secondary' }}">
+                                            {{ task.status }}
                                           </span>
+                                        </td>
                                       </td>
                                   </tr>
                                   {% endfor %}

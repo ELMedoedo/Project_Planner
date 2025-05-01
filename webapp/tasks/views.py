@@ -16,7 +16,9 @@ def planner():
     # Получаем первую доску текущего пользователя
     dashboard = Dashboard.query.filter_by(user_id=current_user.id).first()
     form = TaskForm()
-    
+
+    task_form = TaskForm()
+
     if not dashboard:
         # Создаем новую доску если не существует
         dashboard = Dashboard(
@@ -55,6 +57,26 @@ def process_make_task():
         db.session.add(new_task)
         db.session.commit()
 
+@blueprint.route("/process_make_task", methods=["POST"])
+def process_make_task():
+    form=TaskForm()
+
+    if form.validate_on_submit():
+        new_task = Task(
+            title=form.title.data,
+            body=form.body.data,
+            status= "Новая",
+            due_date=form.due_date.data
+        )
+
+        db.session.add(new_task)
+        db.session.commit()
+
+        flash("Задача создана")
+        return  redirect(url_for("planner.planner"))
+        
+    flash("Ошибка: проверьте правильность данных")
+    return redirect(url_for("planner.planner"))
 
 @blueprint.route("/logout")
 def logout():

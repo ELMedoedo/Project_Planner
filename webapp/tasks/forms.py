@@ -15,7 +15,7 @@ class DashboardForm(FlaskForm):
     table_type = StringField(
         "Тип доски",
         validators=[DataRequired(), Length(max=50)],
-        render_kw={"class": "form-control", "placeholder": "Введите тип доски"},
+        render_kw={"class": "form-control"},
     )
     table_comment = TextAreaField(
         "Комментарий к доске",
@@ -23,7 +23,6 @@ class DashboardForm(FlaskForm):
         render_kw={
             "class": "form-control",
             "rows": 3,
-            "placeholder": "Добавьте описание доски",
         },
     )
     submit = SubmitField("Сохранить доску", render_kw={"class": "btn btn-primary"})
@@ -33,7 +32,7 @@ class TaskForm(FlaskForm):
     title = StringField(
         "Название задачи",
         validators=[DataRequired(), Length(max=100)],
-        render_kw={"class": "form-control", "placeholder": "Введите заголовок"},
+        render_kw={"class": "form-control"},
     )
     body = TextAreaField(
         "Описание задачи",
@@ -41,7 +40,6 @@ class TaskForm(FlaskForm):
         render_kw={
             "class": "form-control",
             "rows": 4,
-            "placeholder": "Добавьте подробное описание задачи",
         },
     )
     status = SelectField(
@@ -60,4 +58,4 @@ class TaskForm(FlaskForm):
         validators=[DataRequired()],
         render_kw={"class": "form-control", "min": datetime.now().strftime("%d-%m-%Y")},
     )
-    submit = SubmitField("Сохранить задачу", render_kw={"class": "btn btn-success"})
+    # submit = SubmitField("Сохранить задачу", render_kw={"class": "btn btn-success"})
