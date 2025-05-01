@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from datetime import datetime
+from datetime import date
 from webapp.db import db  
 
 
@@ -21,10 +21,10 @@ class Task(db.Model):
     __tablename__ = "tasks"
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
     dashboard_id: Mapped[int] = mapped_column(db.Integer, db.ForeignKey('dashboards.id'))
-    title: Mapped[str] = mapped_column(db.String(100), nullable=True)
-    body: Mapped[str] = mapped_column(db.Text, nullable=True)
+    title: Mapped[str] = mapped_column(db.String(100), nullable=False)
+    body: Mapped[str] = mapped_column(db.Text, nullable=False)
     status: Mapped[str] = mapped_column(db.String(50), default="Новая")
-    due_date: Mapped[datetime] = mapped_column(db.DateTime, nullable=False)
+    due_date: Mapped[date] = mapped_column(db.Date, nullable=False)
     # due_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
