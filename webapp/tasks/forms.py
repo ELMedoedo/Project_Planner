@@ -6,6 +6,7 @@ from wtforms import (
     SubmitField,
     BooleanField,
     DateField,
+    HiddenField
 )
 from wtforms.validators import DataRequired, Length
 from datetime import datetime
@@ -59,3 +60,17 @@ class TaskForm(FlaskForm):
         render_kw={"class": "form-control", "min": datetime.now().strftime("%d-%m-%Y")},
     )
     # submit = SubmitField("Сохранить задачу", render_kw={"class": "btn btn-success"})
+
+
+# class TaskStatusForm(FlaskForm):
+#     new_status = SelectField(
+#         "Статус",
+#         choices=[
+#             ("Новая", "Новая"),
+#             ("В работе", "В работе"),
+#             ("Выполнено", "Выполнено"),
+#         ],
+#         validators=[DataRequired()],
+#         render_kw={"class": "form-select"}
+#     )
+#     task_id = HiddenField("Task ID", validators=[DataRequired()])

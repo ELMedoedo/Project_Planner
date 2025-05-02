@@ -1,11 +1,10 @@
 
-from flask import Blueprint, render_template, flash, redirect, url_for
+from flask import Blueprint, render_template, flash, redirect, url_for, request
 from flask_login import logout_user, current_user
-from webapp.user.views import blueprint as user_blueprint
+
 from webapp.tasks.models import Dashboard, Task
 from webapp.tasks.forms import TaskForm
 from webapp.db import db
-from datetime import datetime
 
 
 blueprint = Blueprint("planner", __name__, url_prefix="/planner")
@@ -32,7 +31,8 @@ def planner():
 
     # Получаем задачи для этой доски
     tasks = Task.query.filter_by(dashboard_id=dashboard.id).all()
-    
+
+
     return render_template(
         "planner/planner.html",
         dashboard=dashboard,
@@ -54,8 +54,8 @@ def process_make_task():
             new_task = Task(
                 title=task_form.title.data,
                 body=task_form.body.data,
-                status="Новая",
                 due_date=task_form.due_date.data,
+                status=request.form.get("status"),
                 dashboard_id=dashboard.id
             )
             
@@ -72,6 +72,36 @@ def process_make_task():
                 flash(f"Ошибка в поле {getattr(task_form, field).label.text}: {error}")
     
     return redirect(url_for("planner.planner"))
+
+@blueprint.route("/update_task_status", methods=["POST"])
+def update_task_status():
+    task_id = request.form.get('task_id')
+    new_status = request.form.get('new_status')
+
+    if not task_id or not new_status:
+        flash("Недостаточно данных", "danger")
+        return redirect(url_for('planner.planner'))
+
+    try:
+        task = db.session.get(Task, task_id)  
+        if not task:
+            flash("Задача не найдена", "danger")
+            return redirect(url_for('planner.planner'))
+        
+        # Проверка через явное отношение
+        if task.dashboard.user_id != current_user.id:
+            flash("Доступ запрещён", "danger")
+            return redirect(url_for('planner.planner'))
+
+        task.status = new_status
+        db.session.commit()
+        flash("Статус обновлен", "success")
+    
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Ошибка: {str(e)}", "danger")
+    
+    return redirect(url_for('planner.planner'))
 
 
 @blueprint.route("/logout")

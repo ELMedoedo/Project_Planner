@@ -252,3 +252,19 @@ a.sidebar-link:hover {
     --bs-table-bg: #4a1a2c;
     --bs-table-striped-bg: #5a2a3c;
 }
+
+
+.status-select {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.status-select:hover {
+    border-color: #6c757d;
+}
+
+.status-select option {
+    background: #343a40;
+    color: white;
+}
