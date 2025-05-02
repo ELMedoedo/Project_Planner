@@ -268,3 +268,8 @@ a.sidebar-link:hover {
     background: #343a40;
     color: white;
 }
+
+.bi-x-lg {
+    font-size: 0.9rem;
+    vertical-align: middle;
+}

@@ -30,7 +30,7 @@ def planner():
         db.session.commit()
 
     # Получаем задачи для этой доски
-    tasks = Task.query.filter_by(dashboard_id=dashboard.id).all()
+    tasks = Task.query.filter_by(dashboard_id=dashboard.id).order_by(Task.id).all()
 
 
     return render_template(
@@ -101,6 +101,28 @@ def update_task_status():
         db.session.rollback()
         flash(f"Ошибка: {str(e)}", "danger")
     
+    return redirect(url_for('planner.planner'))
+
+
+@blueprint.route("/delete_task", methods=["POST"])
+def delete_task():
+    task_id = request.form.get("task_id")
+
+    try: 
+        task = Task.query.get(task_id)
+
+        if not task_id or not task_id.isdigit():
+            flash("Некорректный ID задачи", "danger")
+            return redirect(url_for('planner.planner'))
+        
+        db.session.delete(task)
+        db.session.commit()
+        flash("Задача удалена", "success")
+
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Ошибка: {str(e)}", "danger")
+
     return redirect(url_for('planner.planner'))
 
 

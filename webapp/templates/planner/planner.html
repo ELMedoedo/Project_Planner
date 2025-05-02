@@ -180,7 +180,7 @@
     <aside id="navbar">
       <header class="navbar sticky-top bg-light flex-md-nowrap p-6 shadow-sm" data-bs-theme="light">
         <a class="navbar-brand " href="">
-          <i class="bi bi-keyboard text-secondary me-2" style="font-size: 2.5rem;"></i>
+          <i class="bi bi-keyboard" style="font-size: 2.5rem;"></i>
           <!-- <strong class="text-light align-baseline"></strong> -->
           <ul class="nav col-md-4 justify-content-end">
             <li class="nav-item">
@@ -262,6 +262,7 @@
                                 <th scope="col" class="w-60">Описание</th>
                                 <th scope="col" class="w-5">Дата выполнения</th>
                                 <th scope="col" class="w-20">Статус</th>
+                                <th scope="col" class="w-5">Удалить</th>
                               </tr>
                           </thead>
                           <tbody>
@@ -282,11 +283,21 @@
                                         </select>
                                       </form>
                                     </td>
+                                    <td class="text-center">
+                                      <button 
+                                          type="button" class="btn btn-warning" 
+                                          style="border: none; outline: none; box-shadow: none;"
+                                          data-bs-toggle="modal" 
+                                          data-bs-target="#deleteTaskModal"
+                                          data-task-id="{{ task.id }}">
+                                          <i class="bi bi-x-lg"></i> 
+                                      </button>
+                                  </td>
                                   </tr>
                                   {% endfor %}
                               {% else %}
                                   <tr>
-                                      <td colspan="4" class="text-center py-4">
+                                      <td colspan="5" class="text-center py-4">
                                           <div class="text-white">Нет задач на этой доске</div>
                                           <a href="#taskModal" 
                                              class="btn btn-sm btn-primary mt-2"
@@ -303,6 +314,27 @@
           </div>
       </div>
   </div>
+  <div class="modal fade" id="deleteTaskModal" tabindex="-1" aria-labelledby="deleteTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title">Удаление таски</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="deleteTaskForm" action="{{ url_for('planner.delete_task') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="task_id" id="deleteTaskId">
+                    <p>Вы уверены, что хотите удалить эту задачу?</p>
+                </form>
+            </div>
+            <div class="modal-footer border-secondary">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="submit" form="deleteTaskForm" class="btn btn-danger" style="border: none; outline: none; box-shadow: none;">Удалить</button>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="text-center">
         Made by Medoedo
     </div>
