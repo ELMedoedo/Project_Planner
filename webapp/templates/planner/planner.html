@@ -3,15 +3,6 @@
 {% block content %}
 
 <div class="wrapper">
-  {% with messages = get_flashed_messages(category_filter=["registration"]) %}
-  {% if messages %}
-    <div class="alert alert-danger">
-      {% for message in messages %}
-        {{ message }}<br>
-      {% endfor %}
-    </div>
-  {% endif %}
-  {% endwith %}
   <aside id="sidebar">
     <div class="d-flex">
       <button class="toggle-btn" type="button">
@@ -203,6 +194,18 @@
         </a>
       </header>
     </aside>
+    <div class="container-fluid mt-3">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
     <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bg-dark text-white">
@@ -244,9 +247,11 @@
     </div>
     <div class="main p-100">
       <div class="container-fluid">
+        <div class="row mb-3">
+          
           <div class="row">
               <div class="col-12">
-                  <h2 class="mb-4 text-light">{{ dashboard.user_name }} Dashboard</h2>
+                  <h2 class="mb-4 text-dark">{{ dashboard.user_name }} Dashboard</h2>
                   {% if dashboard.table_comment %}
                   <div class="alert alert-dark mb-90">
                       {{ dashboard.table_comment }}
@@ -312,6 +317,33 @@
                   </div>
               </div>
           </div>
+          <div class="col-12 d-flex justify-content-between align-items-center">
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <a href="{{ url_for('planner.prev_dashboard') }}" 
+                   class="btn btn-outline-secondary {% if not prev_dashboard %}disabled{% endif %}">
+                    &larr;
+                </a>
+                <a href="{{ url_for('planner.next_dashboard') }}" 
+                   class="btn btn-outline-secondary {% if not next_dashboard %}disabled{% endif %}">
+                    &rarr;
+                </a>
+                <button 
+                    class="btn btn-outline-danger ms-3"
+                    data-bs-toggle="modal" 
+                    style="border: none; outline: none; box-shadow: none;"
+                    data-bs-target="#deleteDashboardModal"
+                    data-dashboard-id="{{ dashboard.id }}">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+            <form method="POST" action="{{ url_for('planner.create_dashboard') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-plus-lg"></i> Новая доска
+                </button>
+            </form>
+        </div>
+    </div>
       </div>
   </div>
   <div class="modal fade" id="deleteTaskModal" tabindex="-1" aria-labelledby="deleteTaskModalLabel" aria-hidden="true">
@@ -333,8 +365,29 @@
                 <button type="submit" form="deleteTaskForm" class="btn btn-danger" style="border: none; outline: none; box-shadow: none;">Удалить</button>
             </div>
         </div>
-    </div>
-</div>
+      </div>    
+  </div>
+  <div class="modal fade" id="deleteDashboardModal" tabindex="-1" aria-labelledby="deleteDashboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title">Удаление доски</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="deleteDashboardForm" action="{{ url_for('planner.delete_dashboard') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="dashboard_id" id="deleteDashboardId">
+                    <p>Вы уверены, что хотите удалить эту доску? Все задачи будут удалены безвозвратно!</p>
+                </form>
+            </div>
+            <div class="modal-footer border-secondary">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="submit" form="deleteDashboardForm" class="btn btn-danger" style="border: none; outline: none; box-shadow: none;">Удалить</button>
+            </div>
+          </div>
+      </div>
+  </div>
     <div class="text-center">
         Made by Medoedo
     </div>

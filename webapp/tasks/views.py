@@ -1,7 +1,7 @@
 
-from flask import Blueprint, render_template, flash, redirect, url_for, request
+from flask import Blueprint, render_template, flash, redirect, url_for, request, session
 from flask_login import logout_user, current_user
-
+from datetime import datetime
 from webapp.tasks.models import Dashboard, Task
 from webapp.tasks.forms import TaskForm
 from webapp.db import db
@@ -12,33 +12,78 @@ blueprint = Blueprint("planner", __name__, url_prefix="/planner")
 
 @blueprint.route("/planner")
 def planner():
-    # Получаем первую доску текущего пользователя
-    dashboard = Dashboard.query.filter_by(user_id=current_user.id).first()
-    form = TaskForm()
-
-    # task_form = TaskForm()
-
-    if not dashboard:
-        # Создаем новую доску если не существует
-        dashboard = Dashboard(
+    # Получаем все доски пользователя
+    dashboards = Dashboard.query.filter_by(user_id=current_user.id).order_by(Dashboard.id).all()
+    
+    # Автоматическое создание основной доски при отсутствии
+    if not dashboards:
+        new_dashboard = Dashboard(
             user_id=current_user.id,
             user_name=current_user.user,
             table_type="Основная",
-            table_comment="Моя основная доска задач",
+            table_comment="Моя основная доска задач"
         )
-        db.session.add(dashboard)
+        db.session.add(new_dashboard)
         db.session.commit()
+        dashboards = [new_dashboard]
 
-    # Получаем задачи для этой доски
-    tasks = Task.query.filter_by(dashboard_id=dashboard.id).order_by(Task.id).all()
-
-
+    # Получаем текущую доску из сессии или первую
+    current_dashboard_id = session.get('current_dashboard_id', dashboards[0].id)
+    dashboard = next((d for d in dashboards if d.id == current_dashboard_id), dashboards[0])
+    
+    # Определяем соседние доски
+    current_index = dashboards.index(dashboard)
+    prev_dashboard = dashboards[current_index-1] if current_index > 0 else None
+    next_dashboard = dashboards[current_index+1] if current_index < len(dashboards)-1 else None
+    
     return render_template(
         "planner/planner.html",
         dashboard=dashboard,
-        tasks=tasks,
-        task_form=form
+        tasks=Task.query.filter_by(dashboard_id=dashboard.id).order_by(Task.id).all(),
+        task_form=TaskForm(),
+        prev_dashboard=prev_dashboard,
+        next_dashboard=next_dashboard
     )
+
+
+@blueprint.route("/create_dashboard", methods=["POST"])
+def create_dashboard():
+    new_dashboard = Dashboard(
+        user_id=current_user.id,
+        user_name=current_user.user,
+        table_type="Новая доска",
+        table_comment=f"Доска от {datetime.now().strftime('%d.%m.%Y')}"
+    )
+    db.session.add(new_dashboard)
+    db.session.commit()
+    
+    session['current_dashboard_id'] = new_dashboard.id
+    return redirect(url_for('planner.planner'))
+
+
+@blueprint.route("/prev_dashboard")
+def prev_dashboard():
+    dashboards = Dashboard.query.filter_by(user_id=current_user.id).order_by(Dashboard.id).all()
+    current_id = session.get('current_dashboard_id', dashboards[0].id)
+    
+    for i, d in enumerate(dashboards):
+        if d.id == current_id and i > 0:
+            session['current_dashboard_id'] = dashboards[i-1].id
+            break
+            
+    return redirect(url_for('planner.planner'))
+
+@blueprint.route("/next_dashboard")
+def next_dashboard():
+    dashboards = Dashboard.query.filter_by(user_id=current_user.id).order_by(Dashboard.id).all()
+    current_id = session.get('current_dashboard_id', dashboards[0].id)
+    
+    for i, d in enumerate(dashboards):
+        if d.id == current_id and i < len(dashboards)-1:
+            session['current_dashboard_id'] = dashboards[i+1].id
+            break
+            
+    return redirect(url_for('planner.planner'))
 
 @blueprint.route("/process_make_task", methods=["POST"])
 def process_make_task():
@@ -124,6 +169,52 @@ def delete_task():
         flash(f"Ошибка: {str(e)}", "danger")
 
     return redirect(url_for('planner.planner'))
+
+
+@blueprint.route("/delete_dashboard", methods=["POST"])
+def delete_dashboard():
+    dashboard_id = request.form.get("dashboard_id")
+
+    try:
+        dashboard = Dashboard.query.get(dashboard_id)
+        
+        if not dashboard:
+            flash("Доска не найдена", "danger")
+            return redirect(url_for('planner.planner'))
+            
+        if dashboard.user_id != current_user.id:
+            flash("Доступ запрещён", "danger")
+            return redirect(url_for('planner.planner'))
+
+        # Запрет удаления основной доски
+        if dashboard.table_type == "Основная":
+            flash("Нельзя удалить основную доску", "danger")
+            return redirect(url_for('planner.planner'))
+
+        db.session.delete(dashboard)
+        db.session.commit()
+        flash("Доска успешно удалена", "success")
+
+        # Автоматическое создание основной доски при удалении последней
+        remaining = Dashboard.query.filter_by(user_id=current_user.id).count()
+        if remaining == 0:
+            new_dashboard = Dashboard(
+                user_id=current_user.id,
+                user_name=current_user.user,
+                table_type="Основная",
+                table_comment="Моя основная доска задач"
+            )
+            db.session.add(new_dashboard)
+            db.session.commit()
+            session['current_dashboard_id'] = new_dashboard.id
+
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Ошибка: {str(e)}", "danger")
+    
+    return redirect(url_for('planner.planner'))
+
+
 
 
 @blueprint.route("/logout")

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from datetime import date
+from datetime import date, datetime
 from webapp.db import db  
 
 
@@ -11,7 +11,8 @@ class Dashboard(db.Model):
     user_name: Mapped[str] = mapped_column(db.String(120))
     table_type: Mapped[str] = mapped_column(db.String(50), nullable=True)
     table_comment: Mapped[str] = mapped_column(db.Text, nullable=True)
-    tasks: Mapped[list["Task"]] = relationship('Task', back_populates='dashboard')  #new
+    tasks: Mapped[list["Task"]] = relationship('Task', back_populates='dashboard', cascade='all, delete-orphan')
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
 
     def __repr__(self):
         return f"<Board: {self.user_id}, {self.table_type}, Comment: {self.table_comment}>"
