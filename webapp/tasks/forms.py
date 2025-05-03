@@ -43,34 +43,11 @@ class TaskForm(FlaskForm):
             "rows": 4,
         },
     )
-    # status = SelectField(
-    #     "Статус задачи",
-    #     choices=[
-    #         ("Новая", "Новая"),
-    #         ("В работе", "В работе"),
-    #         ("Выполнено", "Выполнено"),
-    #     ],
-    #     validators=[DataRequired()],
-    #     render_kw={"class": "form-select"},
-    # )
 
     due_date = DateField(
         "Срок выполнения",
         validators=[DataRequired()],
         render_kw={"class": "form-control", "min": datetime.now().strftime("%d-%m-%Y")},
     )
-    # submit = SubmitField("Сохранить задачу", render_kw={"class": "btn btn-success"})
 
 
-# class TaskStatusForm(FlaskForm):
-#     new_status = SelectField(
-#         "Статус",
-#         choices=[
-#             ("Новая", "Новая"),
-#             ("В работе", "В работе"),
-#             ("Выполнено", "Выполнено"),
-#         ],
-#         validators=[DataRequired()],
-#         render_kw={"class": "form-select"}
-#     )
-#     task_id = HiddenField("Task ID", validators=[DataRequired()])

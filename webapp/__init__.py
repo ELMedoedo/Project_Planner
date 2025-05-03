@@ -2,13 +2,15 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect
-
+import logging
 
 from webapp.db import db
 from webapp.user.models import User
 from webapp.user.views import blueprint as user_blueprint
 from webapp.tasks.views import blueprint as task_blueprint
 from webapp.admin.views import blueprint as admin_blueprint
+
+# logging.basicConfig(filename="Planner.log", level=logging.INFO)
 
 
 def create_app():

@@ -2,6 +2,8 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request, session
 from flask_login import logout_user, current_user
 from datetime import datetime
+
+from webapp.static.enums import ActionType, ObjectType
 from webapp.tasks.models import Dashboard, Task
 from webapp.tasks.forms import TaskForm
 from webapp.db import db
@@ -56,6 +58,15 @@ def create_dashboard():
     )
     db.session.add(new_dashboard)
     db.session.commit()
+
+    # log_action(
+    #         user_id=current_user.id,
+    #         action=ActionType.CREATE,
+    #         object_type=ObjectType.DASHBOARD,
+    #         object_id=new_dashboard.id,
+    #         details=f"Created dashboard: {new_dashboard.table_comment}"
+    #     )
+    
     
     session['current_dashboard_id'] = new_dashboard.id
     return redirect(url_for('planner.planner'))
@@ -213,6 +224,7 @@ def delete_dashboard():
         flash(f"Ошибка: {str(e)}", "danger")
     
     return redirect(url_for('planner.planner'))
+
 
 
 
