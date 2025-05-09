@@ -10,7 +10,7 @@ from webapp.user.views import blueprint as user_blueprint
 from webapp.tasks.views import blueprint as task_blueprint
 from webapp.admin.views import blueprint as admin_blueprint
 
-# logging.basicConfig(filename="Planner.log", level=logging.INFO)
+logging.basicConfig(filename="Planner.log", level=logging.INFO)
 
 
 def create_app():

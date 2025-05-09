@@ -28,8 +28,8 @@ document.getElementById('deleteDashboardModal').addEventListener('show.bs.modal'
 
 // Активировать автоматическое закрытие алертов через 5 секунд
 
-// window.setTimeout(function() {
-//     $(".alert").fadeTo(500, 0).slideUp(500, function(){
-//         $(this).remove(); 
-//     });
-// }, 5000);
+window.setTimeout(function() {
+    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+        $(this).remove(); 
+    });
+}, 5000);

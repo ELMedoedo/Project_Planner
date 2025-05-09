@@ -3,7 +3,6 @@ from flask import Blueprint, render_template, flash, redirect, url_for, request,
 from flask_login import logout_user, current_user
 from datetime import datetime
 
-from webapp.static.enums import ActionType, ObjectType
 from webapp.tasks.models import Dashboard, Task
 from webapp.tasks.forms import TaskForm
 from webapp.db import db
@@ -56,8 +55,7 @@ def create_dashboard():
         table_type="Новая доска",
         table_comment=f"Доска от {datetime.now().strftime('%d.%m.%Y')}"
     )
-    db.session.add(new_dashboard)
-    db.session.commit()
+
 
     # log_action(
     #         user_id=current_user.id,
@@ -66,6 +64,10 @@ def create_dashboard():
     #         object_id=new_dashboard.id,
     #         details=f"Created dashboard: {new_dashboard.table_comment}"
     #     )
+    
+    db.session.add(new_dashboard)
+    db.session.commit()
+
     
     
     session['current_dashboard_id'] = new_dashboard.id
@@ -101,10 +103,6 @@ def process_make_task():
     task_form = TaskForm()
     dashboard = Dashboard.query.filter_by(user_id=current_user.id).first()
 
-    if not dashboard:
-        flash("Сначала создайте доску")
-        return redirect(url_for("planner.planner"))
-
     if task_form.validate_on_submit():
         try:
             new_task = Task(
@@ -112,8 +110,18 @@ def process_make_task():
                 body=task_form.body.data,
                 due_date=task_form.due_date.data,
                 status=request.form.get("status"),
-                dashboard_id=dashboard.id
+                dashboard_id=dashboard.id,
+                # task_comment=f"Таск от {datetime.now().strftime('%d.%m.%Y')}"
             )
+            
+            # log_action(
+            #     user_id=current_user.id,
+            #     action=ActionType.CREATE,
+            #     object_type=ObjectType.Task,
+            #     object_id=new_task.id,
+            #     details=f"Created dashboard: {new_task.task_comment}"
+            # )
+    
             
             db.session.add(new_task)
             db.session.commit()
@@ -134,20 +142,8 @@ def update_task_status():
     task_id = request.form.get('task_id')
     new_status = request.form.get('new_status')
 
-    if not task_id or not new_status:
-        flash("Недостаточно данных", "danger")
-        return redirect(url_for('planner.planner'))
-
     try:
         task = db.session.get(Task, task_id)  
-        if not task:
-            flash("Задача не найдена", "danger")
-            return redirect(url_for('planner.planner'))
-        
-        # Проверка через явное отношение
-        if task.dashboard.user_id != current_user.id:
-            flash("Доступ запрещён", "danger")
-            return redirect(url_for('planner.planner'))
 
         task.status = new_status
         db.session.commit()
@@ -166,10 +162,6 @@ def delete_task():
 
     try: 
         task = Task.query.get(task_id)
-
-        if not task_id or not task_id.isdigit():
-            flash("Некорректный ID задачи", "danger")
-            return redirect(url_for('planner.planner'))
         
         db.session.delete(task)
         db.session.commit()
@@ -188,14 +180,6 @@ def delete_dashboard():
 
     try:
         dashboard = Dashboard.query.get(dashboard_id)
-        
-        if not dashboard:
-            flash("Доска не найдена", "danger")
-            return redirect(url_for('planner.planner'))
-            
-        if dashboard.user_id != current_user.id:
-            flash("Доступ запрещён", "danger")
-            return redirect(url_for('planner.planner'))
 
         # Запрет удаления основной доски
         if dashboard.table_type == "Основная":
