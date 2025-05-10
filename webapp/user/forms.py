@@ -29,7 +29,7 @@ class LoginForm(FlaskForm):
 
 class ChekMail(FlaskForm):
     chek_email = StringField(
-        "!!Выводить результат!! Мэйл не найдет, либо выслано письмо. Так же кул даун на кнопку в 10 секунд"
+        "#"
     )
     start_chek_and_send = StringField("Восстановить")
 
@@ -44,10 +44,10 @@ class PassRecForm(FlaskForm):
         render_kw={"class": "form-control"},
     )
     chek_pass1 = StringField(
-        "!!ставить галочку при нахождении в лимите 8 -20 символов!!"
+        "#"
     )
     chek_pass2 = StringField(
-        "!!ставить галочку при одинакого введенном пароле с chek_pass1"
+        "#"
     )
     start_rec_pass = StringField("Обновить пароль")
 
