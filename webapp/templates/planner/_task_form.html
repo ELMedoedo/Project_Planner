@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form action="{{ url_for('tasks.process_make_task) }}" method="post" class="text-white">
+    {{ task_form.hidden_tag() }}
+    <div class="mb-3">
+        <label class="form-label"></label>
+
+        {{ task_form.title(
+            placeholder="Введите Тему"
+          ) }}
+        <!-- <input type="text" 
+               class="form-control bg-secondary text-white" 
+               required> -->
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label"></label>
+        <textarea class="form-control bg-secondary text-white" 
+                  rows="4" 
+                  required></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label"></label>
+        <input type="date" 
+               class="form-control bg-secondary text-white" 
+               required>
+    </div>
+
+    <button type="submit" 
+            class="btn btn-primary w-100">
+        Создать задачу
+    </button>
+</form>
+
+{% endblock %}

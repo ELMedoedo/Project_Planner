@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
+
+
 ::after,
 ::before {
     box-sizing: border-box;
@@ -46,6 +48,17 @@ body {
     flex-direction: column;
     background-color: #0e2238;
 }
+
+#navbar .navbar {
+    --bs-navbar-padding-x: 0;
+    --bs-navbar-padding-y: 0;
+    background: #0e2238 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
 
 
 /* Расстояние, на которое раскрывается меню, при нажатии кнопки */
@@ -207,3 +220,57 @@ a.sidebar-link:hover {
     border-radius: 0;
     background-color: #3b7ddd;
 }
+
+.offcanvas-end {
+    width: 500px;
+    background: #0e2238 !important;
+    border-left: 2px solid #1a374d;
+}
+
+.btn-close-white {
+    filter: invert(1);
+}
+
+
+.table {
+    --bs-table-bg: #0e2238;
+    --bs-table-striped-bg: #1a374d;
+    border-color: #2a4b6a;
+}
+
+.table-hover tbody tr:hover {
+    --bs-table-accent-bg: #2a4b6a;
+    color: white;
+}
+
+.badge {
+    font-size: 0.9em;
+    padding: 0.5em 0.75em;
+}
+
+.table-danger {
+    --bs-table-bg: #4a1a2c;
+    --bs-table-striped-bg: #5a2a3c;
+}
+
+
+.status-select {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.status-select:hover {
+    border-color: #6c757d;
+}
+
+.status-select option {
+    background: #343a40;
+    color: white;
+}
+
+.bi-x-lg {
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+
